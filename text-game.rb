@@ -65,6 +65,8 @@ def chooseWeapon(t = 0)
     return @r
 end
 
+stats = ["defence","strength","magic","perception"]
+
 translate = {"defence":"kaitses",
             "strength":"tugevuses",
             "magic":"maagias",
@@ -131,6 +133,38 @@ def getSpeed()
     return @t
 end
 
+def getInput()
+    @input = gets.chomp
+    @input = @input.to_i
+    return @input
+end
+
+
+#pooleli
+def findSkill(t = 0)
+    @skill = Hash.new
+    x = 100
+    for i in stats.size()
+        if x != 0
+            puts "Ma olin vist #{translate[stats[i]]} nii hea:"
+            @input = getInput()
+            sleep t
+            if x < @input
+                begin
+                    puts "Peab olema väiksem kui olemasolevad punktid: "
+                    @input = getInput()
+                    sleep t
+                end while x < @input
+            else
+                x-= @input
+                @skill[:"#{i}"] = @input
+            end
+        else
+
+        end
+    end
+end
+
 time = getSpeed()
 
 player = CreatePlayer.new("peeter",10,10,10,10,10)
@@ -138,10 +172,11 @@ player = CreatePlayer.new("peeter",10,10,10,10,10)
 player.showStatsPrint()
 wep = chooseWeapon(time)
 
-puts wep[1]
+#puts wep
 
-#weapon = CreateWeapon(wep[0],wep[1]wep[2],wep[3])
+weapon = CreateWeapon.new(wep[0],wep[1],wep[2],wep[3])
+#weapon = CreateWeapon.new("relv",10,10,10)
 
-#wep.printStats()
+weapon.printStats()
 
 sleep 60
