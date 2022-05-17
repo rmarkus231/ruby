@@ -65,18 +65,22 @@ def chooseWeapon(t = 0)
     return @r
 end
 
-stats = ["defence","strength","magic","perception"]
-
-translate = {"defence":"kaitses",
+$translate = {"defence":"kaitses",
             "strength":"tugevuses",
             "magic":"maagias",
             "perception":"laskmises",
             "pyss":"püssiga",
             "oda":"odaga",
-            "kepp":"keppiga"
+            "kepp":"kepiga"
 }
 
-stats = ["defence","strength","magic","perception"]
+$translate2 = {"defence":"kaitset",
+    "strength":"tugevust",
+    "magic":"maagiat",
+    "perception":"laskmist"
+}
+
+$stats = ["defence","strength","magic","perception"]
 
 class CreatePlayer
     def initialize(name,s,d,m,per,h)
@@ -123,10 +127,12 @@ def getSpeed()
     puts "kui kiiresti tahad, et mäng liiguks: aeglane\\keskmine\\kiire"
     @time = gets.chomp
     time = @time.downcase
-    if @time == "aeglane"
+    if @time == "aeglane" or @time.to_i == 2
         @t = 2
-    elsif time == "keskmine"
+    elsif time == "keskmine" or @time.to_i == 1
         @t = 1
+    elsif @time.to_i == 0
+        @t = 0
     else
         @t = 0
     end
@@ -141,42 +147,62 @@ end
 
 
 #pooleli
-def findSkill(t = 0)
+def getSkill(t = 0)
     @skill = Hash.new
     x = 100
-    for i in stats.size()
-        if x != 0
-            puts "Ma olin vist #{translate[stats[i]]} nii hea:"
+    @input
+    #for i in $stats.size()
+    #/\ broken stats.size()
+    for i in 0..3
+
+        #puts "$stats[i] #{$stats[i]}"
+        #puts "translate #{$translate["defence"]}"
+        #puts "$translate[$stats[i]] #{$translate[$stats[i]]}"
+        #sleep 60
+        #@temp = ":#{$stats[i]}"
+        #puts "translate: #{$translate[:"#{$stats[i]}"]}"
+
+        if x == 0
+            puts "ma #{$translate2[:"#{$stats[i]}"]} üldse ei osanud: 0"
+            @skill[:"#{i}"] = 0
+        else
+            puts "Sul on #{x} skillpointi jagada"
+            sleep t
+            puts "Ma olin vist #{$translate[:"#{$stats[i]}"]} nii hea:"
             @input = getInput()
             sleep t
-            if x < @input
-                begin
-                    puts "Peab olema väiksem kui olemasolevad punktid: "
-                    @input = getInput()
-                    sleep t
-                end while x < @input
-            else
-                x-= @input
-                @skill[:"#{i}"] = @input
-            end
-        else
+        end
 
+        if x < @input
+            begin
+                puts "Peab olema väiksem kui olemasolevad punktid: "
+                @input = getInput()
+                sleep t
+            end while x < @input
+        else
+            x-= @input
+            @skill[:"#{i}"] = @input
         end
     end
+    return @skill
 end
 
 time = getSpeed()
 
-player = CreatePlayer.new("peeter",10,10,10,10,10)
 
-player.showStatsPrint()
-wep = chooseWeapon(time)
+skill = getSkill(time)
+puts skill
+
+#player = CreatePlayer.new("peeter",10,10,10,10,10)
+
+#player.showStatsPrint()
+#wep = chooseWeapon(time)
 
 #puts wep
 
-weapon = CreateWeapon.new(wep[0],wep[1],wep[2],wep[3])
+#weapon = CreateWeapon.new(wep[0],wep[1],wep[2],wep[3])
 #weapon = CreateWeapon.new("relv",10,10,10)
 
-weapon.printStats()
+#weapon.printStats()
 
 sleep 60
