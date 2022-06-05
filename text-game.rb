@@ -4,13 +4,11 @@ time = 0
 
 =begin
 def checkSave
-    puts "fuck"
 end
 =end
 
 =begin
 def savePlayer(name = "",def = 0,str = 0,mag = 0,per = 0,hp = 0)
-    puts "fuck"
     sleep 10
     open('saves.txt', 'a+') { |@s|
         @s << "#{name}\n"
@@ -180,7 +178,6 @@ def getSkill(t = 0)
     @skill = Hash.new
     @x = 100
 
-    #puts "stats.size:#{$stats.size()}"
     for i in 0..($stats.size()-1) do
 
         if @x == 0
@@ -189,8 +186,6 @@ def getSkill(t = 0)
             sleep @t
         elsif i == 3
             puts "Ma olin #{$translate[:"#{$stats[i]}"]} kindlasti nii hea: #{@x}"
-            #puts "x:#{@x}"
-            #sleep 10
             @input = @x
             sleep @t
         else
@@ -199,8 +194,6 @@ def getSkill(t = 0)
             puts "Ma olin vist #{$translate[:"#{$stats[i]}"]} nii hea:"
             @input = getInput()
             @input = toabsi(@input)
-            #puts "toabsi=#{@input}"
-            #puts "respond?i=#{@input.respond_to?(:to_i)}"
             sleep @t
         end
 
@@ -211,11 +204,7 @@ def getSkill(t = 0)
         end
 
         @x-=@input
-        #puts "x:#{@x}"
-        #@skill[:"#{i}"] = @input
         @skill[i] = @input
-        #puts "@:#{@skill}"
-        #puts "skill:#{@skill}"
     end
     return @skill
 end
@@ -233,7 +222,7 @@ time = getSpeed()
 
 skill = getSkill(time)
 puts "#{skill[0]}"
-savePlayer("Peeter",skill[0],skill[1],skill[2],skill[3],20)
+#savePlayer("Peeter",skill[0],skill[1],skill[2],skill[3],20)
 #player = CreatePlayer.new(peeter,10,10,10,10,10)
 
 #player.showStatsPrint()
