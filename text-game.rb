@@ -2,6 +2,28 @@
 
 time = 0
 
+=begin
+def checkSave
+    puts "fuck"
+end
+=end
+
+=begin
+def savePlayer(name = "",def = 0,str = 0,mag = 0,per = 0,hp = 0)
+    puts "fuck"
+    sleep 10
+    open('saves.txt', 'a+') { |@s|
+        @s << "#{name}\n"
+        @s << "#{def}\n"
+        @s << "#{str}\n"
+        @s << "#{mag}\n"
+        @s << "#{per}\n"
+        @s << "#{hp}\n"
+    }
+    puts "Character saved to file."
+end
+=end
+
 class CreateWeapon
     
     def initialize(name,m,s,p)
@@ -145,55 +167,74 @@ def getInput()
     return @input
 end
 
+def toabsi(input = "0")
+    @input = input
+    @input.to_i
+    @input.abs
+    return @input
+end
 
 #pooleli
 def getSkill(t = 0)
+    @t = t
     @skill = Hash.new
-    x = 100
-    @input
-    #for i in $stats.size()
-    #/\ broken stats.size()
-    for i in 0..3
+    @x = 100
 
-        #puts "$stats[i] #{$stats[i]}"
-        #puts "translate #{$translate["defence"]}"
-        #puts "$translate[$stats[i]] #{$translate[$stats[i]]}"
-        #sleep 60
-        #@temp = ":#{$stats[i]}"
-        #puts "translate: #{$translate[:"#{$stats[i]}"]}"
+    #puts "stats.size:#{$stats.size()}"
+    for i in 0..($stats.size()-1) do
 
-        if x == 0
+        if @x == 0
             puts "ma #{$translate2[:"#{$stats[i]}"]} üldse ei osanud: 0"
-            @skill[:"#{i}"] = 0
+            @input = 0
+            sleep @t
+        elsif i == 3
+            puts "Ma olin #{$translate[:"#{$stats[i]}"]} kindlasti nii hea: #{@x}"
+            #puts "x:#{@x}"
+            #sleep 10
+            @input = @x
+            sleep @t
         else
-            puts "Sul on #{x} skillpointi jagada"
-            sleep t
+            puts "Sul on #{@x} skillpointi jagada"
+            sleep @t
             puts "Ma olin vist #{$translate[:"#{$stats[i]}"]} nii hea:"
             @input = getInput()
-            sleep t
+            @input = toabsi(@input)
+            #puts "toabsi=#{@input}"
+            #puts "respond?i=#{@input.respond_to?(:to_i)}"
+            sleep @t
         end
 
-        if x < @input
-            begin
-                puts "Peab olema väiksem kui olemasolevad punktid: "
-                @input = getInput()
-                sleep t
-            end while x < @input
-        else
-            x-= @input
-            @skill[:"#{i}"] = @input
+        while @x < @input
+            puts "Peab olema väiksem kui olemasolevad punktid:"
+            @input = getInput()
+            @input = toabsi(@input)
         end
+
+        @x-=@input
+        #puts "x:#{@x}"
+        #@skill[:"#{i}"] = @input
+        @skill[i] = @input
+        #puts "@:#{@skill}"
+        #puts "skill:#{@skill}"
     end
     return @skill
+end
+
+def createCharacter()
+    @hp = 20
+    puts "Mu nimi oli vist: "
+    @input = gets.chomp
+    
 end
 
 time = getSpeed()
 
 
-skill = getSkill(time)
-puts skill
 
-#player = CreatePlayer.new("peeter",10,10,10,10,10)
+skill = getSkill(time)
+puts "#{skill[0]}"
+savePlayer("Peeter",skill[0],skill[1],skill[2],skill[3],20)
+#player = CreatePlayer.new(peeter,10,10,10,10,10)
 
 #player.showStatsPrint()
 #wep = chooseWeapon(time)
